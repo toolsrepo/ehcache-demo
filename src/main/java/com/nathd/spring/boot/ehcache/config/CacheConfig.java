@@ -2,6 +2,7 @@ package com.nathd.spring.boot.ehcache.config;
 
 import com.nathd.spring.boot.ehcache.domain.KafkaEvent;
 import org.ehcache.CacheManager;
+import org.ehcache.expiry.ExpiryPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +18,9 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
         return newCacheManagerBuilder()
-                .withCache("events", newCacheConfigurationBuilder(String.class, KafkaEvent.class, heap(100)))
+                .withCache("events", newCacheConfigurationBuilder(String.class, KafkaEvent.class, heap(100))
+                        .withExpiry(ExpiryPolicy.NO_EXPIRY)
+                )
                 .build(true);
     }
 }
